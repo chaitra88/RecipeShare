@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 // --- ADD THIS LINE TO USE YOUR ROUTES ---
 // Any URL starting with /api/recipes will be handled by recipeRoutes
 app.use('/api/recipes', require('./routes/recipeRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 app.listen(port, () => {
     console.log(`Server listening on http://localhost:${port}`);

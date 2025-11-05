@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe'); // Go up one folder, then into models
+const auth = require('../middleware/auth');
 
 // @route   GET /api/recipes
 // @desc    Get all recipes
@@ -33,7 +34,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/recipes
 // @desc    Create a new recipe
 // @access  Private (we'll make this private on Day 2)
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     // We need to get the data from the request body
     const { title, ingredients, instructions, imageUrl } = req.body;
 
@@ -42,8 +43,7 @@ router.post('/', async (req, res) => {
     // On Day 2, we will get this from our authentication token.
     // You must create a user in your DB (using MongoDB Compass) 
     // and paste its _id here.
-    const tempUserId = 'YOUR_USER_ID_HERE'; // <-- PASTE A REAL USER _id HERE
-    // -------------------
+
 
     try {
         const newRecipe = new Recipe({
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
             ingredients,
             instructions,
             imageUrl,
-            user: tempUserId // We will fix this tomorrow
+            user: req.user.id
         });
 
         const recipe = await newRecipe.save();
